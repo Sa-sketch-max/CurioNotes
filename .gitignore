@@ -1,0 +1,18 @@
+# IntelliJ
+.idea/
+
+# Maven
+target/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Java
+*.class
+
+# Temporary
+*.tmp
