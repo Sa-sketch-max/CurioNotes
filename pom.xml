@@ -23,12 +23,12 @@
             <version>17.0.8</version>
         </dependency>
 
-<!--        &lt;!&ndash; JavaFX Web (For live Markdown preview) &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>org.openjfx</groupId>-->
-<!--            <artifactId>javafx-web</artifactId>-->
-<!--            <version>17.0.8</version>-->
-<!--        </dependency>-->
+        <!-- JavaFX Web (For live Markdown preview) -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>17.0.8</version>
+        </dependency>
 
         <!-- Commonmark (Markdown to HTML parser) -->
         <dependency>
