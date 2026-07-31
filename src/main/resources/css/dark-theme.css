@@ -1,0 +1,162 @@
+/* ===========================
+   Global
+=========================== */
+
+.root {
+    -fx-background-color: #191919;
+    -fx-font-family: "Segoe UI";
+}
+
+/* ===========================
+   Menu Bar
+=========================== */
+
+.menu-bar {
+    -fx-background-color: #202020;
+    -fx-border-color: #2F3437;
+    -fx-border-width: 0 0 1 0;
+}
+
+.menu-bar .label {
+    -fx-text-fill: #E5E5E5;
+}
+
+.menu:hover {
+    -fx-background-color: #2F3437;
+}
+
+/* ===========================
+   Sidebar
+=========================== */
+
+.sidebar {
+
+    -fx-background-color: #202020;
+
+    -fx-pref-width: 220;
+
+    -fx-padding: 15;
+
+    -fx-spacing: 10;
+
+    -fx-border-color: #2F3437;
+
+    -fx-border-width: 0 1 0 0;
+
+}
+
+/* ===========================
+   Editor
+=========================== */
+
+.text-area {
+
+    -fx-background-color: #191919;
+
+    -fx-text-fill: #ECECEC;
+
+    -fx-font-size: 15px;
+
+    -fx-focus-color: transparent;
+
+    -fx-faint-focus-color: transparent;
+
+}
+
+.text-area .content {
+
+    -fx-background-color: #191919;
+
+}
+
+/* ===========================
+   Split Pane
+=========================== */
+
+.split-pane {
+
+    -fx-background-color: #191919;
+
+}
+
+.split-pane-divider {
+
+    -fx-background-color: #2F3437;
+
+}
+
+/* ===========================
+   Status Bar
+=========================== */
+
+.status-bar {
+
+    -fx-background-color: #202020;
+
+    -fx-border-color: #2F3437;
+
+    -fx-border-width: 1 0 0 0;
+
+    -fx-padding: 8;
+
+}
+
+/* ===========================
+   Labels
+=========================== */
+
+.label {
+
+    -fx-text-fill: #ECECEC;
+
+}
+
+/* ===========================
+   Sidebar Title
+=========================== */
+
+.sidebar-title{
+
+    -fx-font-size:20px;
+
+    -fx-font-weight:bold;
+
+    -fx-text-fill:white;
+
+    -fx-padding:0 0 18 5;
+
+}
+
+/* ===========================
+   Sidebar Button
+=========================== */
+
+.sidebar-button{
+
+    -fx-background-color:transparent;
+
+    -fx-text-fill:#ECECEC;
+
+    -fx-font-size:14px;
+
+    -fx-alignment:CENTER_LEFT;
+
+    -fx-padding:10 14;
+
+    -fx-background-radius:8;
+
+    -fx-cursor:hand;
+
+}
+
+.sidebar-button:hover{
+
+    -fx-background-color:#2F3437;
+
+}
+
+.sidebar-button:pressed{
+
+    -fx-background-color:#3A3F45;
+
+}

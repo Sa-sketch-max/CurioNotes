@@ -6,7 +6,7 @@ import javafx.scene.control.MenuItem;
 
 public class MenuBarBuilder {
 
-    public static MenuBar createMenuBar() {
+    public static MenuBar build() {
 
         MenuBar menuBar = new MenuBar();
 

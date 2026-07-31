@@ -1,10 +1,11 @@
 package com.editor.ui;
 
 import javafx.scene.Parent;
-import javafx.scene.control.Label;
+
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.SplitPane;
+import javafx.scene.control.SplitPane;
+import javafx.scene.web.WebView;
 
 public class MainLayout {
 
@@ -26,7 +27,7 @@ public class MainLayout {
         TextArea editor = new TextArea();
         editor.setPromptText("Start writing...");
 
-        Label preview = new Label("Markdown Preview");
+        WebView preview = new WebView();
 
         splitPane.getItems().addAll(editor, preview);
 
