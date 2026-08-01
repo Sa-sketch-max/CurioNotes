@@ -160,3 +160,38 @@
     -fx-background-color:#3A3F45;
 
 }
+
+/* ---------- Top Bar ---------- */
+
+.top-bar{
+    -fx-background-color:#202024;
+    -fx-border-color:#313136;
+    -fx-border-width:0 0 1 0;
+}
+
+.app-title{
+
+    -fx-font-size:22px;
+    -fx-font-weight:bold;
+    -fx-text-fill:white;
+}
+
+.top-button{
+
+    -fx-background-color:transparent;
+
+    -fx-text-fill:#E4E4E7;
+
+    -fx-background-radius:8;
+
+    -fx-padding:8 15;
+
+    -fx-cursor:hand;
+
+    -fx-font-size:13px;
+}
+
+.top-button:hover{
+
+    -fx-background-color:#2B2B30;
+}

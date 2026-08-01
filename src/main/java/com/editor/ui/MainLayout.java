@@ -16,7 +16,7 @@ public class MainLayout {
         root = new BorderPane();
 
         // Top
-        root.setTop(MenuBarBuilder.build());
+        root.setTop(new TopBar());
 
         // Left
         root.setLeft(new Sidebar());
