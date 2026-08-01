@@ -1,5 +1,6 @@
 package com.editor.ui;
 
+import com.editor.ui.workspace.Workspace;
 import javafx.scene.Parent;
 
 import javafx.scene.control.TextArea;
@@ -33,7 +34,7 @@ public class MainLayout {
 
         splitPane.setDividerPositions(0.6);
 
-        root.setCenter(splitPane);
+        root.setCenter(new Workspace());
 
         // Bottom
         root.setBottom(new StatusBar());
