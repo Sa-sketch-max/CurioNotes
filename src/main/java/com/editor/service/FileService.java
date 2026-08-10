@@ -26,14 +26,20 @@ public class FileService {
         }
     }
 
-    public List<Note> loadNotes(){
-        try(Stream<Path> paths = Files.list(notesDirectory)){
-            return paths
+    public List<Note> loadNotes() {
+
+        try (Stream<Path> paths = Files.list(notesDirectory)) {
+
+            List<Note> notes = paths
                     .filter(path -> path.toString().endsWith(".md"))
                     .map(Note::new)
                     .collect(Collectors.toList());
 
-        }catch(IOException e){
+            System.out.println("Loaded notes: " + notes.size());
+
+            return notes;
+
+        } catch (IOException e) {
 
             throw new RuntimeException("Failed to load notes.", e);
         }

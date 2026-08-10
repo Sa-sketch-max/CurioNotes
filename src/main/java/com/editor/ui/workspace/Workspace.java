@@ -1,8 +1,11 @@
 package com.editor.ui.workspace;
 
 import com.editor.markdown.MarkdownEngine;
+
+import com.editor.ui.Sidebar;
 import javafx.scene.control.SplitPane;
 import com.editor.service.FileService;
+
 
 public class Workspace extends SplitPane {
 
@@ -11,8 +14,10 @@ public class Workspace extends SplitPane {
     private final MarkdownEngine markdownEngine;
     private final FileService fileService;
     private final WorkspaceController controller;
+    private final Sidebar sidebar;
 
-    public Workspace(){
+    public Workspace(Sidebar sidebar) {
+        this.sidebar = sidebar;
         editorPane = new EditorPane();
         previewPane = new PreviewPane();
         markdownEngine = new MarkdownEngine();
@@ -27,17 +32,14 @@ public class Workspace extends SplitPane {
 
         fileService = new FileService();
 
-        fileService.loadNotes().forEach(note ->
-                System.out.println(note.getName())
-        );
 
-        editorPane.textProperty().addListener((observable, oldText, newText) -> {
 
-            String html = markdownEngine.parseToHtml(newText);
+        sidebar.setNotes(fileService.loadNotes());
 
-            previewPane.setHtml(html);
+        getItems().addAll(editorPane, previewPane);
+        setDividerPositions(0.6);
 
-        });
+
 
         getItems().addAll(editorPane,previewPane);
         setDividerPositions(0.6);

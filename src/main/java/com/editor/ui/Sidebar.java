@@ -6,11 +6,28 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import com.editor.model.Note;
+import javafx.scene.control.ListView;
+import com.editor.model.Note;
+import java.util.List;
 
 public class Sidebar extends VBox {
-
+    private final ListView<Note> notesList;
     public Sidebar() {
 
+        notesList = new ListView<>();
+        notesList.setCellFactory(list -> new javafx.scene.control.ListCell<Note>() {
+            @Override
+            protected void updateItem(Note note, boolean empty) {
+                super.updateItem(note, empty);
+                if (empty || note == null) {
+                    setText(null);
+                }else{
+                    setText("\uD83D\uDCC4" + note.getName());
+                }
+            }
+        });
+        VBox.setVgrow(notesList, Priority.ALWAYS);
         // Apply CSS class
         getStyleClass().add("sidebar");
 
@@ -22,17 +39,10 @@ public class Sidebar extends VBox {
 
         // Application title
         Label title = new Label("CurioNotes");
+
         title.getStyleClass().add("sidebar-title");
 
-        // Navigation buttons
-        Button dashboard = createButton("🏠 Dashboard");
-        Button notes = createButton("📝 Notes");
-        Button dsa = createButton("🧠 DSA");
-        Button study = createButton("📚 Study");
-        Button docs = createButton("📖 Documentation");
-        Button journal = createButton("📅 Journal");
-        Button habits = createButton("✅ Habits");
-        Button expenses = createButton("💰 Expenses");
+
 
         // Spacer pushes Settings to the bottom
         Region spacer = new Region();
@@ -42,14 +52,7 @@ public class Sidebar extends VBox {
 
         getChildren().addAll(
                 title,
-                dashboard,
-                notes,
-                dsa,
-                study,
-                docs,
-                journal,
-                habits,
-                expenses,
+                notesList,
                 spacer,
                 settings
         );
@@ -64,6 +67,14 @@ public class Sidebar extends VBox {
         button.getStyleClass().add("sidebar-button");
 
         return button;
+    }
+
+    public void setNotes(List<Note> notes) {
+
+        System.out.println("Notes received: " + notes.size());
+
+        notesList.getItems().setAll(notes);
+
     }
 
 }
