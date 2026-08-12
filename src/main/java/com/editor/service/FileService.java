@@ -45,4 +45,27 @@ public class FileService {
         }
     }
 
+    public String readNote(Note note) {
+
+        System.out.println("Reading: " + note.getPath());
+
+        try {
+
+            String text = Files.readString(note.getPath());
+
+            System.out.println("Read successful");
+            System.out.println(text);
+
+            return text;
+
+        } catch (IOException e) {
+
+            e.printStackTrace();
+
+            throw new RuntimeException("Failed to read note.", e);
+
+        }
+
+    }
+
 }

@@ -21,17 +21,25 @@ public class Workspace extends SplitPane {
         editorPane = new EditorPane();
         previewPane = new PreviewPane();
         markdownEngine = new MarkdownEngine();
+        fileService = new FileService();
         controller = new WorkspaceController(
                 editorPane,
                 previewPane,
-                markdownEngine
+                markdownEngine,
+                fileService
         );
 
         controller.initialize();
 
 
-        fileService = new FileService();
 
+        sidebar.setNoteSelectedListener(note -> {
+
+            System.out.println("Lambda reached");
+
+            controller.openNote(note);
+
+        });
 
 
         sidebar.setNotes(fileService.loadNotes());
@@ -41,7 +49,6 @@ public class Workspace extends SplitPane {
 
 
 
-        getItems().addAll(editorPane,previewPane);
-        setDividerPositions(0.6);
+
     }
 }

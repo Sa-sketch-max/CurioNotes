@@ -10,12 +10,35 @@ import com.editor.model.Note;
 import javafx.scene.control.ListView;
 import com.editor.model.Note;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class Sidebar extends VBox {
     private final ListView<Note> notesList;
+    private Consumer<Note> noteSelectedListener;
     public Sidebar() {
 
         notesList = new ListView<>();
+
+        notesList.getSelectionModel()
+                .selectedItemProperty()
+                .addListener((observable, oldNote, newNote) -> {
+
+                    System.out.println("Selection changed");
+
+                    if (newNote != null) {
+                        System.out.println("Selected: " + newNote.getName());
+                    }
+
+                    if (newNote != null && noteSelectedListener != null) {
+
+                        System.out.println("Calling listener...");
+
+                        noteSelectedListener.accept(newNote);
+
+                    }
+
+                });
+
         notesList.setCellFactory(list -> new javafx.scene.control.ListCell<Note>() {
             @Override
             protected void updateItem(Note note, boolean empty) {
@@ -74,6 +97,12 @@ public class Sidebar extends VBox {
         System.out.println("Notes received: " + notes.size());
 
         notesList.getItems().setAll(notes);
+
+    }
+
+    public void setNoteSelectedListener(Consumer<Note> listener) {
+
+        this.noteSelectedListener = listener;
 
     }
 
