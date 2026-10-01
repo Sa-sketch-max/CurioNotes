@@ -68,4 +68,18 @@ public class FileService {
 
     }
 
+    public void saveNote(Note note, String content) {
+
+        try {
+
+            Files.writeString(note.getPath(), content);
+
+        } catch (IOException e) {
+
+            throw new RuntimeException("Failed to save note.", e);
+        }
+    }
+
+
+
 }

@@ -5,6 +5,10 @@ import com.editor.markdown.MarkdownEngine;
 import com.editor.ui.Sidebar;
 import javafx.scene.control.SplitPane;
 import com.editor.service.FileService;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.KeyCombination;
 
 
 public class Workspace extends SplitPane {
@@ -28,6 +32,22 @@ public class Workspace extends SplitPane {
                 markdownEngine,
                 fileService
         );
+
+        addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+
+            KeyCodeCombination saveShortcut =
+                    new KeyCodeCombination(
+                            KeyCode.S,
+                            KeyCombination.CONTROL_DOWN
+                    );
+
+            if (saveShortcut.match(event)) {
+
+                controller.saveCurrentNote();
+
+                event.consume();
+            }
+        });
 
         controller.initialize();
 

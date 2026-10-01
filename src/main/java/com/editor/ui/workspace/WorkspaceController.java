@@ -10,6 +10,9 @@ public class WorkspaceController {
     private final PreviewPane previewPane;
     private final MarkdownEngine markdownEngine;
     private final FileService fileService;
+
+    private Note currentNote;
+
     public WorkspaceController(EditorPane editorPane,
                                PreviewPane previewPane,
                                MarkdownEngine markdownEngine,
@@ -35,10 +38,44 @@ public class WorkspaceController {
 
     public void openNote(Note note) {
         System.out.println("Opening: " + note.getName());
+
+        currentNote = note;
+
         String content = fileService.readNote(note);
-        System.out.println(content);
+
         editorPane.setText(content);
         System.out.println("Editor updated");
     }
+
+    public void saveCurrentNote() {
+
+        if (currentNote == null) {
+            System.out.println("No note is currently open.");
+            return;
+        }
+
+        String content = editorPane.getText();
+
+        fileService.saveNote(currentNote, content);
+
+        System.out.println("Saved: " + currentNote.getName());
+    }
+
+//    public void saveNote(Note note, String content) {
+//
+//        try {
+//
+//            Files.writeString(note.getPath(), content);
+//
+//        } catch (IOException e) {
+//
+//            throw new RuntimeException(
+//                    "Failed to save note.",
+//                    e
+//            );
+//
+//        }
+//
+//    }
 
 }

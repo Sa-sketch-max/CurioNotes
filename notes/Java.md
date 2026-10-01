@@ -11,3 +11,5 @@ Welcome to CurioNotes!
 ```java
 System.out.println("Hello CurioNotes");
 ```
+
+so what dies it do
