@@ -80,6 +80,48 @@ public class FileService {
         }
     }
 
+    public Note createNote(String name) {
+        if (!name.endsWith(".md")) {
+            name += ".md";
+        }
+
+        Path notePath = notesDirectory.resolve(name);
+
+        try {
+            Files.createFile(notePath);
+            return new Note(notePath);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to create note.", e);
+        }
+    }
+
+    public void deleteNote(Note note) {
+        try {
+            Files.delete(note.getPath());
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to delete note.", e);
+        }
+    }
+
+
+    public Note renameNote(Note note, String newName) {
+
+        if (!newName.endsWith(".md")) {
+            newName += ".md";
+        }
+
+        Path newPath = notesDirectory.resolve(newName);
+
+        try {
+            Files.move(note.getPath(), newPath);
+
+            return new Note(newPath);
+
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to rename note.", e);
+        }
+    }
+
 
 
 }

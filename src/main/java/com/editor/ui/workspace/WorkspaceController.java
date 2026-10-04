@@ -4,12 +4,14 @@ import com.editor.markdown.MarkdownEngine;
 import com.editor.service.FileService;
 import com.editor.model.Note;
 
+
 public class WorkspaceController {
 
     private final EditorPane editorPane;
     private final PreviewPane previewPane;
     private final MarkdownEngine markdownEngine;
     private final FileService fileService;
+
 
     private Note currentNote;
 
@@ -61,21 +63,37 @@ public class WorkspaceController {
         System.out.println("Saved: " + currentNote.getName());
     }
 
-//    public void saveNote(Note note, String content) {
-//
-//        try {
-//
-//            Files.writeString(note.getPath(), content);
-//
-//        } catch (IOException e) {
-//
-//            throw new RuntimeException(
-//                    "Failed to save note.",
-//                    e
-//            );
-//
-//        }
-//
-//    }
+    public Note createNote(String name) {
+
+        return fileService.createNote(name);
+
+    }
+
+    public void deleteNote(Note note) {
+
+        fileService.deleteNote(note);
+
+        if (currentNote != null &&
+                currentNote.getPath().equals(note.getPath())) {
+
+            currentNote = null;
+            editorPane.clear();
+        }
+    }
+
+    public Note renameNote(Note note, String newName) {
+
+        Note renamedNote = fileService.renameNote(note, newName);
+
+        if (currentNote != null &&
+                currentNote.getPath().equals(note.getPath())) {
+
+            currentNote = renamedNote;
+        }
+
+        return renamedNote;
+    }
+
+
 
 }

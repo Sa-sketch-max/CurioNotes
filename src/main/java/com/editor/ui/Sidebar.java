@@ -1,24 +1,76 @@
 package com.editor.ui;
 
+import com.editor.model.Note;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.control.ListView;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import com.editor.model.Note;
-import javafx.scene.control.ListView;
-import com.editor.model.Note;
+
 import java.util.List;
 import java.util.function.Consumer;
 
 public class Sidebar extends VBox {
+
     private final ListView<Note> notesList;
+    private final Button newNoteButton;
+    private final Button deleteNoteButton;
+    private final Button renameNoteButton;
+
     private Consumer<Note> noteSelectedListener;
+    private Runnable newNoteListener;
+    private Consumer<Note> deleteNoteListener;
+    private Consumer<Note> renameNoteListener;
+
+
     public Sidebar() {
 
         notesList = new ListView<>();
 
+        // New Note button
+        newNoteButton = createButton("＋ New Note");
+
+        newNoteButton.setOnAction(event -> {
+
+            if (newNoteListener != null) {
+                newNoteListener.run();
+            }
+
+        });
+
+        // Delete Note button
+        deleteNoteButton = createButton("🗑 Delete Note");
+
+        deleteNoteButton.setOnAction(event -> {
+
+            Note selectedNote =
+                    notesList.getSelectionModel().getSelectedItem();
+
+            if (selectedNote != null && deleteNoteListener != null) {
+
+                deleteNoteListener.accept(selectedNote);
+
+            }
+
+        });
+
+        renameNoteButton = createButton("✏ Rename Note");
+
+        renameNoteButton.setOnAction(event -> {
+
+            Note selectedNote =
+                    notesList.getSelectionModel().getSelectedItem();
+
+            if (selectedNote != null && renameNoteListener != null) {
+                renameNoteListener.accept(selectedNote);
+            }
+
+        });
+
+        // Note selection listener
         notesList.getSelectionModel()
                 .selectedItemProperty()
                 .addListener((observable, oldNote, newNote) -> {
@@ -34,47 +86,54 @@ public class Sidebar extends VBox {
                         System.out.println("Calling listener...");
 
                         noteSelectedListener.accept(newNote);
-
                     }
 
                 });
 
-        notesList.setCellFactory(list -> new javafx.scene.control.ListCell<Note>() {
+        // Custom note cells
+        notesList.setCellFactory(list -> new ListCell<Note>() {
+
             @Override
             protected void updateItem(Note note, boolean empty) {
+
                 super.updateItem(note, empty);
+
                 if (empty || note == null) {
                     setText(null);
-                }else{
-                    setText("\uD83D\uDCC4" + note.getName());
+                } else {
+                    setText("📄 " + note.getName());
                 }
             }
         });
+
         VBox.setVgrow(notesList, Priority.ALWAYS);
-        // Apply CSS class
+
+        // Sidebar styling
         getStyleClass().add("sidebar");
 
-        // Padding around the sidebar
         setPadding(new Insets(15));
 
-        // Space between components
         setSpacing(8);
 
-        // Application title
+        // Title
         Label title = new Label("CurioNotes");
 
         title.getStyleClass().add("sidebar-title");
 
-
-
-        // Spacer pushes Settings to the bottom
+        // Spacer
         Region spacer = new Region();
+
         VBox.setVgrow(spacer, Priority.ALWAYS);
 
+        // Settings
         Button settings = createButton("⚙ Settings");
 
+        // Add components
         getChildren().addAll(
                 title,
+                newNoteButton,
+                deleteNoteButton,
+                renameNoteButton,
                 notesList,
                 spacer,
                 settings
@@ -97,13 +156,25 @@ public class Sidebar extends VBox {
         System.out.println("Notes received: " + notes.size());
 
         notesList.getItems().setAll(notes);
-
     }
 
     public void setNoteSelectedListener(Consumer<Note> listener) {
 
         this.noteSelectedListener = listener;
-
     }
 
+    public void setNewNoteListener(Runnable listener) {
+
+        this.newNoteListener = listener;
+    }
+
+    public void setDeleteNoteListener(Consumer<Note> listener) {
+
+        this.deleteNoteListener = listener;
+    }
+
+
+    public void setRenameNoteListener(Consumer<Note> listener) {
+        this.renameNoteListener = listener;
+    }
 }
