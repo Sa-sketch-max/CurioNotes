@@ -14,6 +14,7 @@ public class WorkspaceController {
 
 
     private Note currentNote;
+    private boolean dirty;
 
     public WorkspaceController(EditorPane editorPane,
                                PreviewPane previewPane,
@@ -34,6 +35,10 @@ public class WorkspaceController {
 
             previewPane.setHtml(html);
 
+            dirty = true;
+
+            System.out.println("Dirty state: " + dirty);
+
         });
 
     }
@@ -46,7 +51,8 @@ public class WorkspaceController {
         String content = fileService.readNote(note);
 
         editorPane.setText(content);
-        System.out.println("Editor updated");
+        dirty = false;
+        System.out.println("Note opened. Dirty state: " + dirty);
     }
 
     public void saveCurrentNote() {
@@ -60,7 +66,9 @@ public class WorkspaceController {
 
         fileService.saveNote(currentNote, content);
 
-        System.out.println("Saved: " + currentNote.getName());
+        dirty = false;
+
+        System.out.println("Note saved. Dirty state: " + dirty);
     }
 
     public Note createNote(String name) {
@@ -92,6 +100,21 @@ public class WorkspaceController {
         }
 
         return renamedNote;
+    }
+
+    public boolean isDirty() {
+        return dirty;
+    }
+
+    public boolean hasUnsavedChanges() {
+        return dirty;
+    }
+
+
+    public boolean isCurrentNote(Note note) {
+
+        return currentNote != null
+                && currentNote.getPath().equals(note.getPath());
     }
 
 

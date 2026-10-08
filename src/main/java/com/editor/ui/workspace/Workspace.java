@@ -57,12 +57,69 @@ public class Workspace extends SplitPane {
 
         controller.initialize();
 
+
+
+
         sidebar.setNoteSelectedListener(note -> {
 
             System.out.println("Lambda reached");
 
-            controller.openNote(note);
+            if (controller.isDirty()) {
 
+                Alert alert =
+                        new Alert(Alert.AlertType.CONFIRMATION);
+
+                alert.setTitle("Unsaved Changes");
+
+                alert.setHeaderText(
+                        "You have unsaved changes."
+                );
+
+                alert.setContentText(
+                        "Do you want to save your changes before opening "
+                                + note.getName() + "?"
+                );
+
+                ButtonType saveChangesButton =
+                        new ButtonType("Save");
+
+                ButtonType discardChangesButton =
+                        new ButtonType("Don't Save");
+
+                ButtonType cancelChangesButton =
+                        new ButtonType("Cancel");
+
+                alert.getButtonTypes().setAll(
+                        saveChangesButton,
+                        discardChangesButton,
+                        cancelChangesButton
+                );
+
+                Optional<ButtonType> result =
+                        alert.showAndWait();
+
+                if (result.isPresent()
+                        && result.get() == saveChangesButton) {
+
+                    controller.saveCurrentNote();
+                    controller.openNote(note);
+
+                } else if (result.isPresent()
+                        && result.get() == discardChangesButton) {
+
+                    controller.openNote(note);
+
+                } else {
+
+                    System.out.println(
+                            "Opening cancelled."
+                    );
+                }
+
+            } else {
+
+                controller.openNote(note);
+            }
         });
 
 
@@ -70,21 +127,80 @@ public class Workspace extends SplitPane {
 
         sidebar.setDeleteNoteListener(note -> {
 
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            if (controller.isDirty() && controller.isCurrentNote(note)) {
 
-            alert.setTitle("Delete Note");
-            alert.setHeaderText("Delete this note?");
-            alert.setContentText(note.getName());
+                Alert alert =
+                        new Alert(Alert.AlertType.CONFIRMATION);
 
-            Optional<ButtonType> result = alert.showAndWait();
+                alert.setTitle("Unsaved Changes");
 
-            if (result.isPresent() && result.get() == ButtonType.OK) {
+                alert.setHeaderText(
+                        "You have unsaved changes."
+                );
 
-                controller.deleteNote(note);
+                alert.setContentText(
+                        "Do you want to save your changes before deleting "
+                                + note.getName() + "?"
+                );
 
-                sidebar.setNotes(fileService.loadNotes());
+                ButtonType saveChangesButton =
+                        new ButtonType("Save");
+
+                ButtonType discardChangesButton =
+                        new ButtonType("Don't Save");
+
+                ButtonType cancelChangesButton =
+                        new ButtonType("Cancel");
+
+                alert.getButtonTypes().setAll(
+                        saveChangesButton,
+                        discardChangesButton,
+                        cancelChangesButton
+                );
+
+                Optional<ButtonType> result =
+                        alert.showAndWait();
+
+                if (result.isPresent()
+                        && result.get() == saveChangesButton) {
+
+                    controller.saveCurrentNote();
+                    controller.deleteNote(note);
+                    sidebar.setNotes(fileService.loadNotes());
+
+                } else if (result.isPresent()
+                        && result.get() == discardChangesButton) {
+
+                    controller.deleteNote(note);
+                    sidebar.setNotes(fileService.loadNotes());
+
+                } else {
+
+                    System.out.println("Delete cancelled.");
+                }
+
+            } else {
+
+                Alert alert =
+                        new Alert(Alert.AlertType.CONFIRMATION);
+
+                alert.setTitle("Delete Note");
+                alert.setHeaderText("Delete this note?");
+                alert.setContentText(note.getName());
+
+                Optional<ButtonType> result =
+                        alert.showAndWait();
+
+                if (result.isPresent()
+                        && result.get() == ButtonType.OK) {
+
+                    controller.deleteNote(note);
+                    sidebar.setNotes(fileService.loadNotes());
+                }
             }
         });
+
+
 
         sidebar.setNewNoteListener(() -> {
 
@@ -114,6 +230,7 @@ public class Workspace extends SplitPane {
         setDividerPositions(0.6);
 
 
+
         sidebar.setRenameNoteListener(note -> {
 
             String currentName = note.getName();
@@ -125,26 +242,144 @@ public class Workspace extends SplitPane {
                 );
             }
 
-            TextInputDialog dialog = new TextInputDialog(currentName);
+            TextInputDialog dialog =
+                    new TextInputDialog(currentName);
 
             dialog.setTitle("Rename Note");
             dialog.setHeaderText("Rename this note");
             dialog.setContentText("New name:");
 
-            Optional<String> result = dialog.showAndWait();
+            Optional<String> result =
+                    dialog.showAndWait();
 
             result.ifPresent(newName -> {
 
-                Note renamedNote =
-                        controller.renameNote(note, newName);
+                // Check for unsaved changes
+                if (controller.isDirty()
+                        && controller.isCurrentNote(note)) {
 
-                sidebar.setNotes(fileService.loadNotes());
+                    Alert alert =
+                            new Alert(Alert.AlertType.CONFIRMATION);
 
-                controller.openNote(renamedNote);
+                    alert.setTitle("Unsaved Changes");
 
+                    alert.setHeaderText(
+                            "You have unsaved changes."
+                    );
+
+                    alert.setContentText(
+                            "Do you want to save your changes before renaming "
+                                    + note.getName() + "?"
+                    );
+
+                    ButtonType saveChangesButton =
+                            new ButtonType("Save");
+
+                    ButtonType discardChangesButton =
+                            new ButtonType("Don't Save");
+
+                    ButtonType cancelChangesButton =
+                            new ButtonType("Cancel");
+
+                    alert.getButtonTypes().setAll(
+                            saveChangesButton,
+                            discardChangesButton,
+                            cancelChangesButton
+                    );
+
+                    Optional<ButtonType> choice =
+                            alert.showAndWait();
+
+                    if (choice.isPresent()
+                            && choice.get() == saveChangesButton) {
+
+                        controller.saveCurrentNote();
+
+                        Note renamedNote =
+                                controller.renameNote(note, newName);
+
+                        sidebar.setNotes(
+                                fileService.loadNotes()
+                        );
+
+                        controller.openNote(renamedNote);
+
+                    } else if (choice.isPresent()
+                            && choice.get() == discardChangesButton) {
+
+                        Note renamedNote =
+                                controller.renameNote(note, newName);
+
+                        sidebar.setNotes(
+                                fileService.loadNotes()
+                        );
+
+                        controller.openNote(renamedNote);
+
+                    } else {
+
+                        System.out.println(
+                                "Rename cancelled."
+                        );
+                    }
+
+                } else {
+
+                    // No relevant unsaved changes
+                    Note renamedNote =
+                            controller.renameNote(note, newName);
+
+                    sidebar.setNotes(
+                            fileService.loadNotes()
+                    );
+
+                    controller.openNote(renamedNote);
+                }
             });
         });
 
 
+    }
+
+
+    public boolean canClose(){
+        if(!controller.isDirty()){
+            return true;
+        }
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+
+        alert.setTitle("Unsaved Changes");
+
+        alert.setHeaderText("You have unsaved changes");
+
+        alert.setContentText("Do you want to save your changes before closing?");
+
+        ButtonType saveChangesButton =
+                new ButtonType("Save");
+
+        ButtonType discardChangesButton =
+                new ButtonType("Don't Save");
+
+        ButtonType cancelChangesButton =
+                new ButtonType("Cancel");
+
+        alert.getButtonTypes().setAll(
+                saveChangesButton,
+                discardChangesButton,
+                cancelChangesButton
+        );
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if(result.isPresent()
+                && result.get() == saveChangesButton) {
+            controller.saveCurrentNote();
+            return true;
+        }else if(result.isPresent()
+        && result.get() == discardChangesButton) {
+            return true;
+        }else
+            return false;
     }
 }

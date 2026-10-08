@@ -8,6 +8,7 @@ import javafx.scene.layout.BorderPane;
 public class MainLayout {
 
     private final BorderPane root;
+    private final Workspace workspace;
 
     public MainLayout() {
 
@@ -18,7 +19,7 @@ public class MainLayout {
 
         Sidebar sidebar = new Sidebar();
 
-        Workspace workspace = new Workspace(sidebar);
+        workspace = new Workspace(sidebar);
         root.setLeft(sidebar);
         root.setCenter(workspace);
 
@@ -28,6 +29,10 @@ public class MainLayout {
 
     public Parent getRoot() {
         return root;
+    }
+
+    public boolean canClose() {
+        return workspace.canClose();
     }
 
 }

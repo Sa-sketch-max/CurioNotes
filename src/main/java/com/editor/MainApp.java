@@ -12,18 +12,17 @@ public class MainApp extends Application {
 
         MainLayout mainLayout = new MainLayout();
 
-        Scene scene = new Scene(mainLayout.getRoot(), 1400, 800);
+        Scene scene =
+                new Scene(mainLayout.getRoot(), 1200, 800);
 
-        scene.getStylesheets().add(
-                getClass().getResource("/css/dark-theme.css").toExternalForm()
-        );
-
-        stage.setTitle("CurioNotes");
         stage.setScene(scene);
+
+        stage.setOnCloseRequest(event -> {
+
+            if (!mainLayout.canClose()) {
+                event.consume();
+            }
+        });
+
         stage.show();
     }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-}
